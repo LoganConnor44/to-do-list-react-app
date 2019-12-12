@@ -16,10 +16,10 @@ const Task = ({task, index, completeTask, removeTask}) => {
             <h1>{task.name}</h1>
             <p>{task.description}</p>
             <button style = {{background: "red"}} 
-                onClick = {() => removeTask(index)}>
+                onClick = {() => removeTask(index, task)}>
                     x
             </button>
-            <button onClick = {() => completeTask(index)}>
+            <button onClick = {() => completeTask(index, task)}>
                 Complete
             </button>
         </div>
