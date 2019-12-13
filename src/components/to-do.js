@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TaskTable from './task-table';
-
 import CreateTask from './create-task';
 import SyncTask from './sync-task';
 import StatusEnum from '../util/status-enum';
@@ -40,6 +39,7 @@ const Todo = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [tasksRemaining, setTasksRemaining] = useState(0);
+    
 
     /**
      * Retrieves data from mock api.
@@ -124,10 +124,28 @@ const Todo = () => {
      * @param {Integer} index 
      */
     const removeTask = (index, task) => {
+        console.log(`the index ${index} and the id ${task.id}`);
         const existingTasks = [...tasks];
         existingTasks.splice(index, 1);
         setTasks(existingTasks);
         db.goals.where("id").equals(task.id).delete()
+    };
+
+    const batchRemoveTasks = selectedTasks => {
+        const keysToDelete = selectedTasks.map(x => x.id);
+        db.transaction('rw', db.goals, async () => {
+            db.goals.bulkDelete(keysToDelete)
+        }).then(() => {
+            console.log('job well done there friend');
+            const existingTasks = [...tasks];
+            for (var i = 0; i < selectedTasks.length; i++) {
+                existingTasks.splice(existingTasks.indexOf(selectedTasks[i].index, 1));
+            }
+            
+            setTasks(existingTasks);
+        }).catch(err => {
+            console.error(err.stack);
+        });
     };
 
     const syncTask = tasksToSync => {
@@ -173,7 +191,8 @@ const Todo = () => {
                                 {!isLoading && tasks ?
                                     <TaskTable tasks={tasks}
                                         completeTask = {completeTask}
-                                        removeTask = {removeTask} /> :
+                                        removeTask = {removeTask} 
+                                        batchRemoveTasks = {batchRemoveTasks} /> :
                                     <div>Loading ...</div>
                                 }
 
