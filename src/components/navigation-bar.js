@@ -46,7 +46,6 @@ const NavigationBar = () => {
 						<search-input-styling>
 							<ClickAwayListener onClickAway={searchIconClick} >
 								<InputBase
-									visibility={!searchIconClick ? "visible" : "hidden"}
 									autoFocus
 									placeholder="Search…"
 									inputProps={{ 'aria-label': 'search' }}
