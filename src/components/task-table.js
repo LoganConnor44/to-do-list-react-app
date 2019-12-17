@@ -12,7 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DoneIcon from '@material-ui/icons/Done';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Chip from '@material-ui/core/Chip';
+import StatusEnum from '../util/status-enum';
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -32,11 +35,19 @@ const useToolbarStyles = makeStyles(theme => ({
     title: {
       flex: '1 1 100%',
     },
+    titleIcons: {
+        display: 'flex'
+    }
   }));
 
-const TableToolbar = ({selected, setSelected, batchRemoveTasks}) => {
+const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTasks}) => {
     const classes = useToolbarStyles();
     const numSelected = selected.length;
+
+    const completeTasksAndClearSelected = () => {
+        batchCompleteTasks(selected);
+        setSelected([]);
+    };
 
     const removeTasksAndClearSelected = () => {
         batchRemoveTasks(selected);
@@ -55,16 +66,23 @@ const TableToolbar = ({selected, setSelected, batchRemoveTasks}) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                Name Of Goal
+                Name Of Goal 
                 </Typography>
             )}
 
             {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                <IconButton aria-label="delete">
-                    <DeleteIcon onClick={removeTasksAndClearSelected} />
-                </IconButton>
-                </Tooltip>
+                <div className={classes.titleIcons}>
+                    <Tooltip title="Done">
+                        <IconButton aria-label="done">
+                            <DoneIcon onClick={completeTasksAndClearSelected} />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete">
+                            <DeleteIcon onClick={removeTasksAndClearSelected} />
+                        </IconButton>
+                    </Tooltip>
+                </div>
             ) : (
                 <Tooltip title="Filter list">
                 <IconButton aria-label="filter list">
@@ -84,7 +102,7 @@ const TableToolbar = ({selected, setSelected, batchRemoveTasks}) => {
  * @param {function} completeTask
  * @param {function} removeTask 
  */
-const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks}) => {
+const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchCompleteTasks}) => {
     const [selected, setSelected] = useState([]);
 
     const isRowSelected = rowItem => {
@@ -110,14 +128,13 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks}) => {
         <div>
             <TableToolbar selected={selected}
                 batchRemoveTasks={batchRemoveTasks}
+                batchCompleteTasks={batchCompleteTasks}
                 setSelected={setSelected} />
             <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell>Task</TableCell>
                         <TableCell>Description</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -138,19 +155,17 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks}) => {
                                 selected={isItemSelected} >
                                 <TableCell component="th" scope="row">{task.name}</TableCell>
                                 <TableCell component="th" scope="row">{task.description}</TableCell>
-                                <TableCell component="th" scope="row">
-                                    <button onClick = {() => completeTask(index, task)}>
-                                        Complete
-                                    </button>
-                                </TableCell>
                                 <TableCell padding="checkbox" scope="row">
                                     <Checkbox checked={isItemSelected} />
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    <button style = {{background: "red"}} 
-                                        onClick = {() => removeTask(index, task)}>
-                                            x
-                                    </button>
+                                    {
+                                        task.status === StatusEnum.INACTIVE &&
+                                        <Chip
+                                            label="Done"
+                                            clickable
+                                            color="primary"
+                                            deleteIcon={<DoneIcon />}
+                                        />
+                                    }
                                 </TableCell>
                             </TableRow>
                         );

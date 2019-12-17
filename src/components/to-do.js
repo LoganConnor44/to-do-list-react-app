@@ -134,15 +134,24 @@ const Todo = () => {
     const batchRemoveTasks = selectedTasks => {
         const keysToDelete = selectedTasks.map(x => x.id);
         db.transaction('rw', db.goals, async () => {
-            db.goals.bulkDelete(keysToDelete)
+            db.goals.bulkDelete(keysToDelete);
+            db.goals.toArray().then(x => setTasks(x));
         }).then(() => {
             console.log('job well done there friend');
-            const existingTasks = [...tasks];
-            for (var i = 0; i < selectedTasks.length; i++) {
-                existingTasks.splice(existingTasks.indexOf(selectedTasks[i].index, 1));
+        }).catch(err => {
+            console.error(err.stack);
+        });
+    };
+
+    const batchCompleteTasks = selectedTasks => {
+        const keysToComplete = selectedTasks.map(x => x.id);
+        db.transaction('rw', db.goals, async () => {
+            for (let i = 0; i < selectedTasks.length; i++) {
+                db.goals.update(selectedTasks[i].id, { status: StatusEnum.INACTIVE });
             }
-            
-            setTasks(existingTasks);
+            db.goals.toArray().then(x => setTasks(x));
+        }).then(() => {
+            console.log('job well done there friend');
         }).catch(err => {
             console.error(err.stack);
         });
@@ -192,7 +201,8 @@ const Todo = () => {
                                     <TaskTable tasks={tasks}
                                         completeTask = {completeTask}
                                         removeTask = {removeTask} 
-                                        batchRemoveTasks = {batchRemoveTasks} /> :
+                                        batchRemoveTasks = {batchRemoveTasks} 
+                                        batchCompleteTasks = {batchCompleteTasks} /> :
                                     <div>Loading ...</div>
                                 }
 
