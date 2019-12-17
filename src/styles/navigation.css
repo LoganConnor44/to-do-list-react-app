@@ -1,0 +1,44 @@
+container-left {
+    float: left;
+    width: 75%;
+}
+hamburger-styling {
+    float: left;
+}
+title-styling {
+    float: right;
+    /* centering vertically - start */
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    /* centering vertically - end */
+}
+
+
+
+container-right {
+    float: right;
+    width: 25%;
+    color: inherit;
+}
+search-input-styling {
+    float: left;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    width: 100%;
+}
+search-input-styling:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+input:focus {
+    color: white;
+}
+.rootInput {
+    padding-left: 5%;
+}
+search-icon-styling {
+    float: right;
+}
