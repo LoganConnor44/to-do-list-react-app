@@ -7,6 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import '../styles/navigation.css';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const NavigationBar = () => {
 	const [isSearchIconClicked, setIsSearchIconClicked] = useState(false);
@@ -43,10 +44,14 @@ const NavigationBar = () => {
 						</search-icon-styling>
 					) : (
 						<search-input-styling>
-							<InputBase
-								placeholder="Search…"
-								inputProps={{ 'aria-label': 'search' }}
-								className="rootInput" />
+							<ClickAwayListener onClickAway={searchIconClick} >
+								<InputBase
+									visibility={!searchIconClick ? "visible" : "hidden"}
+									autoFocus
+									placeholder="Search…"
+									inputProps={{ 'aria-label': 'search' }}
+									className="rootInput" />
+							</ClickAwayListener>
 						</search-input-styling>
 					)
 				}

@@ -26,13 +26,17 @@ container-right {
 search-input-styling {
     float: left;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.15)
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
 }
-search-input-styling:hover, search-input-styling:focus {
+search-input-styling:hover {
     background-color: rgba(255, 255, 255, 0.25);
 }
-.rootInput {
+input:focus {
     color: white;
+}
+.rootInput {
+    padding-left: 5%;
 }
 search-icon-styling {
     float: right;
