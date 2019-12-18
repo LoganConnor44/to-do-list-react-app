@@ -14,7 +14,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import Chip from '@material-ui/core/Chip';
 import StatusEnum from '../util/status-enum';
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -40,17 +39,32 @@ const useToolbarStyles = makeStyles(theme => ({
     }
   }));
 
-const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTasks}) => {
+const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTasks, removeTask, completeTask}) => {
     const classes = useToolbarStyles();
     const numSelected = selected.length;
 
+    /**
+     * Logic to determine if a single or batch update is appropriate.
+     * 
+     * @param {Integer} numSelected 
+     */
     const completeTasksAndClearSelected = () => {
-        batchCompleteTasks(selected);
+        if (numSelected === 1) {
+            completeTask(selected[0]);
+        } else {
+            batchCompleteTasks(selected);
+        }
+        
         setSelected([]);
     };
 
     const removeTasksAndClearSelected = () => {
-        batchRemoveTasks(selected);
+        if (numSelected === 1) {
+            removeTask(selected[0]);
+        } else {
+            batchRemoveTasks(selected);
+        }
+        
         setSelected([]);
     };
 
@@ -73,13 +87,13 @@ const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTas
             {numSelected > 0 ? (
                 <div className={classes.titleIcons}>
                     <Tooltip title="Done">
-                        <IconButton aria-label="done">
-                            <DoneIcon onClick={completeTasksAndClearSelected} />
+                        <IconButton aria-label="done" onClick={completeTasksAndClearSelected}>
+                            <DoneIcon />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton aria-label="delete">
-                            <DeleteIcon onClick={removeTasksAndClearSelected} />
+                        <IconButton aria-label="delete" onClick={removeTasksAndClearSelected}>
+                            <DeleteIcon />
                         </IconButton>
                     </Tooltip>
                 </div>
@@ -97,10 +111,22 @@ const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTas
 /**
  * React task web component.
  *  
- * @param {json} task
- * @param {integer} index
- * @param {function} completeTask
- * @param {function} removeTask 
+ * @param { [ {
+ *          id: Integer
+ *          name: String,
+ *          status: StatusEnum,
+ *          created: Date,
+ *          deadline: Date,
+ *          description: null,
+ *          diffculty: DifficultyEnum,
+ *          importance: ImportanceEnum,
+ *          lastModified :Date,
+ *          owner: String
+ *      } ] } tasks
+ * @param {Function} completeTask
+ * @param {Function} removeTask
+ * @param {Function} batchRemoveTasks
+ * @param {Function} batchCompleteTasks
  */
 const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchCompleteTasks}) => {
     const [selected, setSelected] = useState([]);
@@ -127,9 +153,11 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
     return (
         <div>
             <TableToolbar selected={selected}
+                setSelected={setSelected}
+                removeTask={removeTask}
+                completeTask={completeTask}
                 batchRemoveTasks={batchRemoveTasks}
-                batchCompleteTasks={batchCompleteTasks}
-                setSelected={setSelected} />
+                batchCompleteTasks={batchCompleteTasks} />
             <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
@@ -152,20 +180,23 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                             <TableRow key={index} 
                                 hover
                                 onClick={() => selectDeselectRow(rowTaskItem)}
-                                selected={isItemSelected} >
-                                <TableCell component="th" scope="row">{task.name}</TableCell>
-                                <TableCell component="th" scope="row">{task.description}</TableCell>
+                                selected={isItemSelected || task.status === StatusEnum.INACTIVE} >
+                                <TableCell component="th" scope="row">
+                                    { task.status === StatusEnum.INACTIVE ? (
+                                        <strike>{task.name}</strike>
+                                    ) : (
+                                        task.name
+                                    )}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    { task.status === StatusEnum.INACTIVE ? (
+                                        <strike>{task.description}</strike>
+                                    ) : (
+                                        task.description
+                                    )}
+                                </TableCell>
                                 <TableCell padding="checkbox" scope="row">
                                     <Checkbox checked={isItemSelected} />
-                                    {
-                                        task.status === StatusEnum.INACTIVE &&
-                                        <Chip
-                                            label="Done"
-                                            clickable
-                                            color="primary"
-                                            deleteIcon={<DoneIcon />}
-                                        />
-                                    }
                                 </TableCell>
                             </TableRow>
                         );
