@@ -1,0 +1,13 @@
+app-root-styling {
+    flex-grow: 1;
+    display: block;
+}
+
+grid-content-styling {
+    text-align: center;
+}
+
+app-content-styling {
+    margin: 25px;
+    display: block;
+}

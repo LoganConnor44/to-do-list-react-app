@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import '../styles/navigation.css';
+import '../styles/navigation-bar.css';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const NavigationBar = () => {

@@ -9,29 +9,14 @@ import ImportanceEnum from '../util/importance-enum';
 import axios from 'axios';
 import Dexie from 'dexie';
 import NavigationBar from './navigation-bar';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1
-      },
-      content: {
-          margin: 25
-      },
-      paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center'
-      }
-}));
+import '../styles/to-do.css';
 
 /**
  * Main To Do application component.
  */
 const Todo = () => {
-    const classes = useStyles();
-
     const db = new Dexie("ToDoDb");
     db.version(1).stores({goals: `++id`});
 
@@ -105,6 +90,10 @@ const Todo = () => {
         setTasks(newTasks);
         db.goals.put(newUserTask)
     };
+
+    const editTask = selectedTask => {
+
+    }
 
     /**
      * Sets an existing task to completed.
@@ -199,48 +188,50 @@ const Todo = () => {
     };
 
     return(
-        <div className={classes.root}>
+        <app-root-styling>
 
             <div>
                 <NavigationBar />
             </div>
 
-            <div className={classes.content}>
-
+            <app-content-styling>
                 <Grid container 
                     spacing={3} 
                     alignItems="center"
                     justify="center">
                     <Grid item xs={10}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="h2" gutterBottom>
-                                    Pending Tasks ({tasksRemaining})
-                                </Typography>
+                        <grid-content-styling>
+                            <Paper style={{padding: '16px'}}>
+                                <Typography variant="h6" gutterBottom>
+                                        {tasksRemaining} Active Tasks
+                                    </Typography>
 
-                                {hasError && <div>Something went wrong ...</div>}
+                                    {hasError && <div>Something went wrong ...</div>}
 
-                                {!isLoading && tasks ?
-                                    <TaskTable tasks={tasks}
-                                        completeTask = {completeTask}
-                                        removeTask = {removeTask} 
-                                        batchRemoveTasks = {batchRemoveTasks} 
-                                        batchCompleteTasks = {batchCompleteTasks} /> :
-                                    <div>Loading ...</div>
-                                }
+                                    {!isLoading && tasks ?
+                                        <TaskTable tasks={tasks}
+                                            completeTask = {completeTask}
+                                            removeTask = {removeTask} 
+                                            batchRemoveTasks = {batchRemoveTasks} 
+                                            batchCompleteTasks = {batchCompleteTasks} /> :
+                                        <div>Loading ...</div>
+                                    }
 
-                            <div className = "create-task">
-                                <CreateTask addTask = {addTask} />
-                            </div>
-                        </Paper>
+                                <div className = "create-task">
+                                    <CreateTask addTask = {addTask} />
+                                </div>
+                            </Paper>
+                        </grid-content-styling>
+                        
                         <div>
                             <SyncTask allTasks = {tasks} 
                                 syncTask = {syncTask} />
                         </div>
                     </Grid>
                 </Grid>
-            </div>
+            </app-content-styling>
 
-        </div>
+        </app-root-styling>
     );
 };
 

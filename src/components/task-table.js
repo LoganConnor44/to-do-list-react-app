@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
+import EditIcon from '@material-ui/icons/Edit';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import StatusEnum from '../util/status-enum';
 
@@ -140,7 +141,12 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
         return false;
     }
 
-    const selectDeselectRow = (rowTaskItem) => {
+    const imClicked = () => {
+        console.log(`i got clicked!`);
+    }
+
+    const selectDeselectRow = (rowTaskItem, event) => {
+        console.log(event.target.id);
         let existingSelectedItems = [...selected];
         if (isRowSelected(rowTaskItem)) {
             existingSelectedItems.splice(existingSelectedItems.indexOf(selected.find( x => x.id === rowTaskItem.id)), 1);
@@ -164,6 +170,7 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                         <TableCell>Task</TableCell>
                         <TableCell>Description</TableCell>
                         <TableCell></TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -179,7 +186,7 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                         return (
                             <TableRow key={index} 
                                 hover
-                                onClick={() => selectDeselectRow(rowTaskItem)}
+                                onClick={(event) => selectDeselectRow(rowTaskItem, event)}
                                 selected={isItemSelected || task.status === StatusEnum.INACTIVE} >
                                 <TableCell component="th" scope="row">
                                     { task.status === StatusEnum.INACTIVE ? (
@@ -195,6 +202,18 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                                         task.description
                                     )}
                                 </TableCell>
+                                {isItemSelected ? (
+                                    <TableCell padding="checkbox" scope="row" onClick={imClicked}>
+                                        <Tooltip title="Edit" >
+                                            <IconButton aria-label="edit">
+                                                <EditIcon id="edit" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                ) : (
+                                    <TableCell></TableCell>
+                                )
+                                }
                                 <TableCell padding="checkbox" scope="row">
                                     <Checkbox checked={isItemSelected} />
                                 </TableCell>
