@@ -17,46 +17,46 @@ const NavigationBar = () => {
 	}
 
 	return (
-		<AppBar>
-			<Toolbar>
-				<container-left>
-					<hamburger-styling>
-						<IconButton
-							color="inherit"
-							aria-label="open drawer" >
-							<MenuIcon />
-						</IconButton>
-					</hamburger-styling>
-					<title-styling>
-						<Typography variant="h6" noWrap>
-							PWA To Do App
+			<AppBar style={{position: 'sticky'}}>
+				<Toolbar>
+					<container-left>
+						<hamburger-styling>
+							<IconButton
+								color="inherit"
+								aria-label="open drawer" >
+								<MenuIcon />
+							</IconButton>
+						</hamburger-styling>
+						<title-styling>
+							<Typography variant="h6" noWrap>
+								PWA To Do App
 						</Typography>
-					</title-styling>
-				</container-left>
-				<container-right>
-				{
-					isSearchIconClicked === false ? (
-						<search-icon-styling>
-							{/* below classes taken from raw, inspecting html - could not get icons to match*/}
-							<div class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
-								<SearchIcon onClick={searchIconClick} />
-							</div>
-						</search-icon-styling>
-					) : (
-						<search-input-styling>
-							<ClickAwayListener onClickAway={searchIconClick} >
-								<InputBase
-									autoFocus
-									placeholder="Search…"
-									inputProps={{ 'aria-label': 'search' }}
-									className="rootInput" />
-							</ClickAwayListener>
-						</search-input-styling>
-					)
-				}
-				</container-right>
-			</Toolbar>
-		</AppBar>
+						</title-styling>
+					</container-left>
+					<container-right>
+						{
+							isSearchIconClicked === false ? (
+								<search-icon-styling>
+									{/* below classes taken from raw, inspecting html - could not get icons to match*/}
+									<div class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
+										<SearchIcon onClick={searchIconClick} />
+									</div>
+								</search-icon-styling>
+							) : (
+									<search-input-styling>
+										<ClickAwayListener onClickAway={searchIconClick} >
+											<InputBase
+												autoFocus
+												placeholder="Search…"
+												inputProps={{ 'aria-label': 'search' }}
+												className="rootInput" />
+										</ClickAwayListener>
+									</search-input-styling>
+								)
+						}
+					</container-right>
+				</Toolbar>
+			</AppBar>
 	);
 }
 
