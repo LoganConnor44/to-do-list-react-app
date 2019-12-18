@@ -38,20 +38,20 @@ const NavigationBar = () => {
 							isSearchIconClicked === false ? (
 								<search-icon-styling>
 									{/* below classes taken from raw, inspecting html - could not get icons to match*/}
-									<div class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
+									<div className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
 										<SearchIcon onClick={searchIconClick} />
 									</div>
 								</search-icon-styling>
 							) : (
-									<search-input-styling>
-										<ClickAwayListener onClickAway={searchIconClick} >
+									<ClickAwayListener onClickAway={searchIconClick} >
+										<search-input-styling>
 											<InputBase
 												autoFocus
 												placeholder="Search…"
 												inputProps={{ 'aria-label': 'search' }}
 												className="rootInput" />
-										</ClickAwayListener>
-									</search-input-styling>
+										</search-input-styling>
+									</ClickAwayListener>
 								)
 						}
 					</container-right>
