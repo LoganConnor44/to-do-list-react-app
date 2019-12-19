@@ -137,6 +137,7 @@ const Todo = () => {
         const existingTasks = [...tasks];
         existingTasks.splice(selectedTask.index, 1);
         setTasks(existingTasks);
+        console.log(`the selected task id is: ${selectedTask.id}`)
         db.goals.where("id").equals(selectedTask.id).delete()
     };
 
