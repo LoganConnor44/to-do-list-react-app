@@ -12,6 +12,31 @@ import NavigationBar from './navigation-bar';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import '../styles/to-do.css';
+import UseAddToHomescreenPrompt from './add-to-homescreen';
+
+const InstallPwa = () => {
+    const [prompt, promptToInstall] = UseAddToHomescreenPrompt();
+    const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
+    const hideAddToHomescreen = () => setIsAddToHomescreenVisible(false);
+
+    useEffect(() => {
+        if (prompt) {
+            setIsAddToHomescreenVisible(true);
+        }
+    }, [prompt]);
+
+    if (!isAddToHomescreenVisible) {
+        return <div />;
+    }
+
+    return (
+        <div onClick={hideAddToHomescreen}>
+            <button onClick={hideAddToHomescreen}>Close</button>
+                Hello! Wanna add to homescreen?
+            <button onClick={promptToInstall}>Add to homescreen</button>
+        </div>
+    );
+}
 
 /**
  * Main To Do application component.
@@ -20,10 +45,13 @@ const Todo = () => {
     const db = new Dexie("ToDoDb");
     db.version(1).stores({goals: `++id`});
 
+    
     const [hasError, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [tasksRemaining, setTasksRemaining] = useState(0);
+
+    
     
 
     /**
@@ -194,6 +222,8 @@ const Todo = () => {
             <div>
                 <NavigationBar />
             </div>
+
+            <InstallPwa />
 
             <app-content-styling>
                 <Grid container 
