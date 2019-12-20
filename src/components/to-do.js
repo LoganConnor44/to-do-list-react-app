@@ -18,15 +18,15 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const InstallPwa = () => {
     const [prompt, promptToInstall] = UseAddToHomescreenPrompt();
     const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
     const hideAddToHomescreen = () => setIsAddToHomescreenVisible(false);
-    const [openSnackbar, setOpenSnackbar] = useState(true);
-
-    const toggleClose = () => {
-        setOpenSnackbar(!openSnackbar);
+    const installAndHideMessage = () => {
+        hideAddToHomescreen();
+        promptToInstall();
     }
     
     useEffect(() => {
@@ -35,21 +35,18 @@ const InstallPwa = () => {
         }
     }, [prompt]);
 
-    // if (!isAddToHomescreenVisible) {
-    //     return <div />;
-    // }
-
     const message = "Click here to download this app.";
 
-    return (
-        <Snackbar anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-                
-            }}
-            open={openSnackbar}
-            autoHideDuration={3000}  >
-            <SnackbarContent message={
+    return ( 
+        isAddToHomescreenVisible &&
+            <Snackbar anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    
+                }}
+                open={isAddToHomescreenVisible}
+                autoHideDuration={3000}  >
+                <SnackbarContent message={
                     <div style={{
                             display: 'flex',
                             alignItems: 'center'
@@ -57,19 +54,19 @@ const InstallPwa = () => {
                         <InfoIcon style={{marginRight: 4}} />
                     {message}
                     </div>
-                } 
-                style={{backgroundColor: '#43a047'}}
-                action={
-                    <IconButton key="close" aria-label="close" onClick={toggleClose} >
-                        <CloseIcon />
-                    </IconButton>
-                } />
-        </Snackbar>
-        // <div onClick={hideAddToHomescreen}>
-        //     <button onClick={hideAddToHomescreen}>Close</button>
-        //         Hello! Wanna add to homescreen?
-        //     <button onClick={promptToInstall}>Add to homescreen</button>
-        // </div>
+                    } 
+                    style={{backgroundColor: '#43a047'}}
+                    action={
+                        <div>
+                            <IconButton key="close" aria-label="close" onClick={installAndHideMessage} >
+                                <GetAppIcon />
+                            </IconButton>
+                            <IconButton key="close" aria-label="close" onClick={hideAddToHomescreen} >
+                                <CloseIcon />
+                            </IconButton>
+                        </div>
+                    } />
+            </Snackbar>
     );
 }
 
