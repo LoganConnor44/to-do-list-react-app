@@ -13,28 +13,63 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import '../styles/to-do.css';
 import UseAddToHomescreenPrompt from './add-to-homescreen';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import InfoIcon from '@material-ui/icons/Info';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 
 const InstallPwa = () => {
     const [prompt, promptToInstall] = UseAddToHomescreenPrompt();
     const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
     const hideAddToHomescreen = () => setIsAddToHomescreenVisible(false);
+    const [openSnackbar, setOpenSnackbar] = useState(true);
 
+    const toggleClose = () => {
+        setOpenSnackbar(!openSnackbar);
+    }
+    
     useEffect(() => {
         if (prompt) {
             setIsAddToHomescreenVisible(true);
         }
     }, [prompt]);
 
-    if (!isAddToHomescreenVisible) {
-        return <div />;
-    }
+    // if (!isAddToHomescreenVisible) {
+    //     return <div />;
+    // }
+
+    const message = "Click here to download this app.";
 
     return (
-        <div onClick={hideAddToHomescreen}>
-            <button onClick={hideAddToHomescreen}>Close</button>
-                Hello! Wanna add to homescreen?
-            <button onClick={promptToInstall}>Add to homescreen</button>
-        </div>
+        <Snackbar anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                
+            }}
+            open={openSnackbar}
+            autoHideDuration={3000}  >
+            <SnackbarContent message={
+                    <div style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}>
+                        <InfoIcon style={{marginRight: 4}} />
+                    {message}
+                    </div>
+                } 
+                style={{backgroundColor: '#43a047'}}
+                action={
+                    <IconButton key="close" aria-label="close" onClick={toggleClose} >
+                        <CloseIcon />
+                    </IconButton>
+                } />
+        </Snackbar>
+        // <div onClick={hideAddToHomescreen}>
+        //     <button onClick={hideAddToHomescreen}>Close</button>
+        //         Hello! Wanna add to homescreen?
+        //     <button onClick={promptToInstall}>Add to homescreen</button>
+        // </div>
     );
 }
 
@@ -222,6 +257,8 @@ const Todo = () => {
             <div>
                 <NavigationBar />
             </div>
+
+            
 
             <InstallPwa />
 
