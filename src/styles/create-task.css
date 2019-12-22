@@ -4,6 +4,6 @@ form-styling {
     background: white;
 }
 
-input:hover {
+input {
     color: black !important;
 }
