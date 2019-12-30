@@ -75,7 +75,7 @@ const InstallPwa = () => {
  */
 const Todo = () => {
     const db = new Dexie("ToDoDb");
-    db.version(1).stores({goals: `++id`});
+    db.version(2).stores({tasks: `++id`});
 
     
     const [hasError, setError] = useState(false);
@@ -115,7 +115,7 @@ const Todo = () => {
         const fetchBrowserData = async () => {
             setIsLoading(true);
             try {
-                db.goals.toArray().then(x => setTasks(x));
+                db.tasks.toArray().then(x => setTasks(x));
             } catch(error) {
                 setError(true);
             }
@@ -148,7 +148,7 @@ const Todo = () => {
             newUserTask
         ];
         setTasks(newTasks);
-        db.goals.put(newUserTask)
+        db.tasks.put(newUserTask)
     };
 
     const editTask = selectedTask => {
@@ -162,7 +162,7 @@ const Todo = () => {
      */
     const completeTask = selectedTask => {
         const existingTasks = toggleTaskStatusIndicator([selectedTask]);
-        db.goals.update(selectedTask.id, {status: existingTasks[selectedTask.index].status});
+        db.tasks.update(selectedTask.id, {status: existingTasks[selectedTask.index].status});
     };
 
     /**
@@ -198,14 +198,14 @@ const Todo = () => {
         existingTasks.splice(selectedTask.index, 1);
         setTasks(existingTasks);
         console.log(`the selected task id is: ${selectedTask.id}`)
-        db.goals.where("id").equals(selectedTask.id).delete()
+        db.tasks.where("id").equals(selectedTask.id).delete()
     };
 
     const batchRemoveTasks = selectedTasks => {
         const keysToDelete = selectedTasks.map(x => x.id);
-        db.transaction('rw', db.goals, async () => {
-            db.goals.bulkDelete(keysToDelete);
-            db.goals.toArray().then(x => setTasks(x));
+        db.transaction('rw', db.tasks, async () => {
+            db.tasks.bulkDelete(keysToDelete);
+            db.tasks.toArray().then(x => setTasks(x));
         }).then(() => {
             console.info(`The selected tasks, ${JSON.stringify(selectedTasks)}, were saved to the browser db.`);
         }).catch(err => {
@@ -217,11 +217,11 @@ const Todo = () => {
     const batchCompleteTasks = selectedTasks => {
         const existingTasks = toggleTaskStatusIndicator(selectedTasks);        
         
-        db.transaction('rw', db.goals, async () => {
+        db.transaction('rw', db.tasks, async () => {
             selectedTasks.forEach(task => {
-                db.goals.update(task.id, {status: existingTasks[task.index].status});
+                db.tasks.update(task.id, {status: existingTasks[task.index].status});
             });
-            db.goals.toArray().then(x => setTasks(x));
+            db.tasks.toArray().then(x => setTasks(x));
         }).then(() => {
             console.info(`The selected tasks, ${JSON.stringify(selectedTasks)}, were set as complete in the browser db.`);
         }).catch(err => {
