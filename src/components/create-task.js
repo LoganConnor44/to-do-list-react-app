@@ -35,7 +35,7 @@ const CreateTask = ({ addTask }) => {
 					placeholder="Add a new task"
 					onChange={event => setValue(event.target.value)} />
 				<Tooltip title="save" >
-					<IconButton aria-label="save" type="input">
+					<IconButton aria-label="save" type="submit">
 						<SendIcon />
 					</IconButton>
 				</Tooltip>
