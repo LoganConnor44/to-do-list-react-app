@@ -31,11 +31,9 @@ const CreateTask = ({ addTask }) => {
 				<TextField
 					label="Task"
 					type="text"
-					className="input asdf"
 					value={value}
 					placeholder="Add a new task"
-					onChange={event => setValue(event.target.value)}
-					style={{ color: "rgba(0, 0, 0, 0.87)"}} />
+					onChange={event => setValue(event.target.value)} />
 				<Tooltip title="save" >
 					<IconButton aria-label="save" type="input">
 						<SendIcon />
