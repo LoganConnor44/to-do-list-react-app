@@ -17,6 +17,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import StatusEnum from '../util/status-enum';
 import '../styles/task-table.css';
+import EditTask from './edit-task';
+
+
+import TextField from '@material-ui/core/TextField';
+import '../styles/create-task.css';
+import SendIcon from '@material-ui/icons/Send';
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -141,11 +147,12 @@ const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTas
  * @param {Function} toggleSelectedRow
  * @retuns React Component
  */
-const SelectedEditableOrInactive = ({task, rowTaskItem, isSelected, isEditable, isInactive, toggleSelectedRow}) => {
+const SelectedEditableOrInactive = ({task, editTask, rowTaskItem, isSelected, isEditable, isInactive, toggleSelectedRow}) => {
     return(
         isSelected && isEditable ? (
             <TableCell component="th" scope="row">
-                you are now editing
+                <EditTask editTask={editTask}
+                    currentTask={task} />
             </TableCell>
         ) : (
             <TableCell component="th" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
@@ -179,7 +186,7 @@ const SelectedEditableOrInactive = ({task, rowTaskItem, isSelected, isEditable, 
  * @param {Function} batchRemoveTasks
  * @param {Function} batchCompleteTasks
  */
-const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchCompleteTasks}) => {
+const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks, batchCompleteTasks}) => {
     const [selected, setSelected] = useState([{
         id: null, 
         index: null 
@@ -317,64 +324,60 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                 completeTask={completeTask}
                 batchRemoveTasks={batchRemoveTasks}
                 batchCompleteTasks={batchCompleteTasks} />
-            <Table aria-label="simple table">
+            
+            <Table aria-label="task table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Task</TableCell>
-                        <TableCell>Description</TableCell>
+                        <TableCell>Task Name</TableCell>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {
-                    tasks.map((task, index) => {
+                    {
+                        tasks.map((task, index) => {
 
-                        const rowTaskItem = { 
-                            id: task.id, 
-                            index: index 
-                        };
-                        const isItemSelected = isRowSelected(rowTaskItem);
-                        const isItemEditable = isRowEditable(rowTaskItem);
-                        const isItemInactive = isRowInactive(task);
-                        const isItemHighlighted = isRowHighlighted(isItemSelected, isItemEditable, isItemInactive);
+                            const rowTaskItem = { 
+                                id: task.id,
+                                index: index 
+                            };
+                            const isItemSelected = isRowSelected(rowTaskItem);
+                            const isItemEditable = isRowEditable(rowTaskItem);
+                            const isItemInactive = isRowInactive(task);
+                            const isItemHighlighted = isRowHighlighted(isItemSelected, isItemEditable, isItemInactive);
 
-                        return (
-                            <TableRow key={index} 
-                                hover
-                                selected={isItemHighlighted} >
-                                <SelectedEditableOrInactive
-                                    task={task}
-                                    rowTaskItem={rowTaskItem}
-                                    isSelected={isItemSelected}
-                                    isEditable={isItemEditable}
-                                    isInactive={isItemInactive}
-                                    toggleSelectedRow={isItemSelected} />                             
-                                <TableCell component="th" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
-                                    { isItemInactive ? (
-                                        <strike>{task.description}</strike>
+                            return (
+                                <TableRow key={index} 
+                                    hover
+                                    selected={isItemHighlighted} 
+                                    className="table-row">
+                                    <SelectedEditableOrInactive
+                                        task={task}
+                                        editTask={editTask}
+                                        rowTaskItem={rowTaskItem}
+                                        isSelected={isItemSelected}
+                                        isEditable={isItemEditable}
+                                        isInactive={isItemInactive}
+                                        toggleSelectedRow={isItemSelected} />
+                                    
+                                    {isItemSelected ? (
+                                        <TableCell padding="checkbox" scope="row" onClick={() => toggleEditability(rowTaskItem)}>
+                                            <Tooltip title="Edit" >
+                                                <IconButton aria-label="edit">
+                                                    <EditIcon  />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
                                     ) : (
-                                        task.description
+                                        <TableCell padding="checkbox" scope="row"></TableCell>
                                     )}
-                                </TableCell>
-                                {isItemSelected ? (
-                                    <TableCell padding="checkbox" scope="row" onClick={() => toggleEditability(rowTaskItem)}>
-                                        <Tooltip title="Edit" >
-                                            <IconButton aria-label="edit">
-                                                <EditIcon  />
-                                            </IconButton>
-                                        </Tooltip>
+                                    <TableCell padding="checkbox" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
+                                        <Checkbox checked={isItemSelected} />
                                     </TableCell>
-                                ) : (
-                                    <TableCell padding="checkbox" onClick={() => toggleSelectedRow(rowTaskItem)}></TableCell>
-                                )}
-                                <TableCell padding="checkbox" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
-                                    <Checkbox checked={isItemSelected} />
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })
-                }            
+                                </TableRow>
+                            );
+                        })
+                    }
                 </TableBody>
             </Table>
         </div>

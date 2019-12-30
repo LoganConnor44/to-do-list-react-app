@@ -10,16 +10,17 @@ import Tooltip from '@material-ui/core/Tooltip';
  * 
  * @param {function} addTask 
  */
-const CreateTask = ({ addTask }) => {
-	const [value, setValue] = useState("");
+const EditTask = ({ editTask, currentTask }) => {
+	const [userValue, setUserValue] = useState(currentTask);
 
 	const handleSubmit = event => {
 		event.preventDefault();
-		if (!value) {
+		if (!userValue) {
 			return;
-		}
-		addTask(value);
-		setValue("");
+        }
+        const updatedTask = {...currentTask, name: userValue};
+		editTask(updatedTask);
+		setUserValue("");
 	};
 
 	return (
@@ -28,11 +29,11 @@ const CreateTask = ({ addTask }) => {
 				noValidate
 				autoComplete="off">
 				<TextField
-					label="Task"
+					label="Edit Task"
 					type="text"
-					value={value}
+					value={userValue.name}
 					placeholder="Add a new task"
-					onChange={event => setValue(event.target.value)} />
+					onChange={event => setUserValue(event.target.value)} />
 				<Tooltip title="save" >
 					<IconButton aria-label="save" type="submit">
 						<SendIcon />
@@ -43,4 +44,4 @@ const CreateTask = ({ addTask }) => {
 	);
 };
 
-export default CreateTask;
+export default EditTask;
