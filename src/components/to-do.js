@@ -27,7 +27,7 @@ const InstallPwa = () => {
     const installAndHideMessage = () => {
         hideAddToHomescreen();
         promptToInstall();
-    }
+    };
     
     useEffect(() => {
         if (prompt) {
@@ -76,7 +76,6 @@ const InstallPwa = () => {
 const Todo = () => {
     const db = new Dexie("ToDoDb");
     db.version(2).stores({tasks: `++id`});
-
     
     const [hasError, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -124,7 +123,6 @@ const Todo = () => {
         fetchBrowserData();
     // eslint-disable-next-line
     }, []);
-    
 
     /**
      * Adds a new task and defaults it to not complete.
@@ -151,10 +149,6 @@ const Todo = () => {
         db.tasks.put(newUserTask)
     };
 
-    const editTask = selectedTask => {
-
-    }
-
     /**
      * Sets an existing task to completed.
      * 
@@ -163,6 +157,21 @@ const Todo = () => {
     const completeTask = selectedTask => {
         const existingTasks = toggleTaskStatusIndicator([selectedTask]);
         db.tasks.update(selectedTask.id, {status: existingTasks[selectedTask.index].status});
+    };
+
+    /**
+     * Edits an existing task's name.
+     * 
+     * @todo this param is not correct
+     * @param { {id: integer, index: integer} } selectedTask
+     */
+    const editTask = updatedTask => {
+        const updatedTasks = [
+            ...tasks,
+            updatedTask
+        ];
+        setTasks(updatedTasks);
+        db.tasks.update(updatedTask.id, {name: updatedTask.name});
     };
 
     /**
@@ -277,6 +286,7 @@ const Todo = () => {
                                         <TaskTable tasks={tasks}
                                             completeTask = {completeTask}
                                             removeTask = {removeTask} 
+                                            editTask = {editTask}
                                             batchRemoveTasks = {batchRemoveTasks} 
                                             batchCompleteTasks = {batchCompleteTasks} /> :
                                         <div>Loading ...</div>
