@@ -321,7 +321,6 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                 <TableHead>
                     <TableRow>
                         <TableCell>Task</TableCell>
-                        <TableCell>Description</TableCell>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
                     </TableRow>
@@ -350,13 +349,7 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                                     isEditable={isItemEditable}
                                     isInactive={isItemInactive}
                                     toggleSelectedRow={isItemSelected} />                             
-                                <TableCell component="th" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
-                                    { isItemInactive ? (
-                                        <strike>{task.description}</strike>
-                                    ) : (
-                                        task.description
-                                    )}
-                                </TableCell>
+                                
                                 {isItemSelected ? (
                                     <TableCell padding="checkbox" scope="row" onClick={() => toggleEditability(rowTaskItem)}>
                                         <Tooltip title="Edit" >
@@ -366,7 +359,7 @@ const TaskTable = ({tasks, completeTask, removeTask, batchRemoveTasks, batchComp
                                         </Tooltip>
                                     </TableCell>
                                 ) : (
-                                    <TableCell padding="checkbox" onClick={() => toggleSelectedRow(rowTaskItem)}></TableCell>
+                                    <TableCell padding="checkbox" scope="row"></TableCell>
                                 )}
                                 <TableCell padding="checkbox" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
                                     <Checkbox checked={isItemSelected} />
