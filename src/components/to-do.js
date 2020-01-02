@@ -4,14 +4,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import Dexie from 'dexie';
-import TaskTable from './task-table';
-import CreateTask from './create-task';
+import TaskTable from './task/views/task-table';
+import CreateTask from './task/actions/create-task';
 import SyncTask from './sync-task';
 import StatusEnum from '../util/status-enum';
 import DifficultyEnum from '../util/difficulty-enum';
 import ImportanceEnum from '../util/importance-enum';
-import NavigationBar from './navigation-bar';
-import InstallPwa from './install-pwa';
+import NavigationBar from './navigation/navigation-bar';
+import InstallPwa from './pwa/install-pwa';
 import '../styles/to-do.css';
 
 /**

@@ -7,11 +7,11 @@ import TableRow from '@material-ui/core/TableRow';
 import { Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import TableToolbar from './table-toolbar';
 import EditIcon from '@material-ui/icons/Edit';
 import SelectedEditableOrInactive from './selected-editable-or-inactive';
-import StatusEnum from '../util/status-enum';
-import TableToolbar from './table-toolbar';
-import '../styles/create-task.css';
+import StatusEnum from '../../../util/status-enum';
+import '../../../styles/create-task.css';
 
 /**
  * React task web component.

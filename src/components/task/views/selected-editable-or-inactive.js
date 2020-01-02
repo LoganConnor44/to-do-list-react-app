@@ -1,6 +1,6 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import EditTask from './edit-task';
+import EditTask from '../actions/edit-task';
 
 /**
  * React web component that decides if the name of the task should be normal, has a strikethrough, or be editable.

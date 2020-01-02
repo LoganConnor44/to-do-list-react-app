@@ -36,21 +36,21 @@ const CreateTask = ({ addTask }) => {
 			<form onSubmit={handleSubmitToCreateTask}
 				noValidate
 				autoComplete="off">
-			<create-task-container-left>
-				<TextField label="Task"
-					type="text"
-					value={value}
-					placeholder="Add a new task"
-					onChange={event => setValue(event.target.value)} />
-			</create-task-container-left>
-			<create-task-container-right>
-				<Tooltip title="save" >
-						<IconButton aria-label="save" 
-							type="submit">
-							<SendIcon />
-						</IconButton>
-					</Tooltip>
-			</create-task-container-right>
+				<create-task-container-left>
+					<TextField label="Task"
+						type="text"
+						value={value}
+						placeholder="Add a new task"
+						onChange={event => setValue(event.target.value)} />
+				</create-task-container-left>
+				<create-task-container-right>
+					<Tooltip title="save" >
+							<IconButton aria-label="save" 
+								type="submit">
+								<SendIcon />
+							</IconButton>
+						</Tooltip>
+				</create-task-container-right>
 			</form>
 		</create-task-form-styling>
 	);
