@@ -29,7 +29,7 @@ const EditTask = ({ editTask, currentTask, toggleSelectedRowAndEditability }) =>
 				<TextField
 					label="Edit Task"
 					type="text"
-					value={userValue.name}
+					defaultValue={userValue.name}
 					placeholder="Add a new task"
 					onChange={event => setUserValue(event.target.value)} />
 			</form>
