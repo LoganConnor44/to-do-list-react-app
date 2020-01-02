@@ -8,11 +8,10 @@ import { Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
-import '../styles/create-task.css';
-import '../styles/task-table.css';
 import SelectedEditableOrInactive from './selected-editable-or-inactive';
 import StatusEnum from '../util/status-enum';
 import TableToolbar from './table-toolbar';
+import '../styles/create-task.css';
 
 /**
  * React task web component.
@@ -131,7 +130,10 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
         const nonNullExistingItems = removeItemsWithNullId(editable);
         let existingEditableItems = [...nonNullExistingItems];
         if (isRowEditable(rowTaskItem)) {
-            existingEditableItems.splice(existingEditableItems.indexOf(editable.find( x => x.id === rowTaskItem.id)), 1);
+            existingEditableItems.splice(
+                existingEditableItems.indexOf(editable.find( x => x.id === rowTaskItem.id)),
+                1
+            );
         } else {
             existingEditableItems.push({
                 id: rowTaskItem.id,
@@ -147,6 +149,7 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
      * 
      * Strips the initial null values and sets the values using spread operator.
      * If the row is currently selected - make it unselected by removing it from the array.
+     * If the row is currently selected - check if the row is editable - if it is make it uneditable.
      * If the row is currently unselected - make it selected by adding it to the array.
      * Reset the React Hook.
      * 
@@ -157,16 +160,17 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
         const nonNullExistingItems = removeItemsWithNullId(selected);
         let existingSelectedItems = [...nonNullExistingItems];
         if (isRowSelected(rowTaskItem)) {
-            existingSelectedItems.splice(existingSelectedItems.indexOf(selected.find( x => x.id === rowTaskItem.id)), 1);
+            existingSelectedItems.splice(
+                existingSelectedItems.indexOf(selected.find( x => x.id === rowTaskItem.id)),
+                1
+            );
+            if (isRowEditable(rowTaskItem)) {
+                toggleEditability(rowTaskItem);
+            }
         } else {
             existingSelectedItems.push(rowTaskItem);
         }
         setSelected(existingSelectedItems);
-    };
-
-    const toggleSelectedRowAndEditability = rowTaskItem => {
-        toggleEditability(rowTaskItem);
-        toggleSelectedRow(rowTaskItem);
     };
 
     return (
@@ -210,10 +214,12 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
                                         isSelected={isItemSelected}
                                         isEditable={isItemEditable}
                                         isInactive={isItemInactive}
-                                        toggleSelectedRowAndEditability={() => toggleSelectedRowAndEditability(rowTaskItem)} />
+                                        toggleSelectedRow={() => toggleSelectedRow(rowTaskItem)} />
                                     
                                     {isItemSelected ? (
-                                        <TableCell padding="checkbox" scope="row" onClick={() => toggleEditability(rowTaskItem)}>
+                                        <TableCell padding="checkbox" 
+                                            scope="row" 
+                                            onClick={() => toggleEditability(rowTaskItem)} >
                                             <Tooltip title="Edit" >
                                                 <IconButton aria-label="edit">
                                                     <EditIcon  />
@@ -223,7 +229,9 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
                                     ) : (
                                         <TableCell padding="checkbox" scope="row"></TableCell>
                                     )}
-                                    <TableCell padding="checkbox" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
+                                    <TableCell padding="checkbox" 
+                                        scope="row" 
+                                        onClick={() => toggleSelectedRow(rowTaskItem)} >
                                         <Checkbox checked={isItemSelected} />
                                     </TableCell>
                                 </TableRow>

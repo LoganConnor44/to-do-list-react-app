@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * React create task web component.
+ * React sync task web component.
  * 
  * @param {function} addTask 
  */

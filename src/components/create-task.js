@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import '../styles/create-task.css';
 import SendIcon from '@material-ui/icons/Send';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -13,7 +12,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 const CreateTask = ({ addTask }) => {
 	const [value, setValue] = useState("");
 
-	const handleSubmit = event => {
+	/**
+	 * Creates a task based on the user's input.
+	 * 
+	 * Prevent default actions from the event.
+	 * If the event value is empty, return immediately.
+	 * Add the task to the React State.
+	 * Reset the user's input value to an emtpy string.
+	 * 
+	 * @param {Object} event - Standard Web Event 
+	 */
+	const handleSubmitToCreateTask = event => {
 		event.preventDefault();
 		if (!value) {
 			return;
@@ -24,7 +33,7 @@ const CreateTask = ({ addTask }) => {
 
 	return (
 		<create-task-form-styling>
-			<form onSubmit={handleSubmit}
+			<form onSubmit={handleSubmitToCreateTask}
 				noValidate
 				autoComplete="off">
 			<create-task-container-left>

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 
-const UseAddToHomescreenPrompt = () => {
+/**
+ * Prompts the user to install the application.
+ */
+const AddToHomescreenPrompt = () => {
     const [prompt, setPrompt] = useState(null);
 
     const promptToInstall = () => {
@@ -22,6 +25,6 @@ const UseAddToHomescreenPrompt = () => {
     }, []);
 
     return [prompt, promptToInstall];
-}
+};
 
-export default UseAddToHomescreenPrompt;
+export default AddToHomescreenPrompt;

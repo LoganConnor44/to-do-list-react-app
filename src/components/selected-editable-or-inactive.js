@@ -3,7 +3,7 @@ import TableCell from '@material-ui/core/TableCell';
 import EditTask from './edit-task';
 
 /**
- * 
+ * React web component that decides if the name of the task should be normal, has a strikethrough, or be editable.
  * 
  * @param { {
  *          id: Integer
@@ -24,13 +24,13 @@ import EditTask from './edit-task';
  * @param {Function} toggleSelectedRow
  * @retuns React Component
  */
-const SelectedEditableOrInactive = ({task, editTask, isSelected, isEditable, isInactive, toggleSelectedRowAndEditability}) => {
+const SelectedEditableOrInactive = ({task, editTask, isSelected, isEditable, isInactive, toggleSelectedRow}) => {
     return(
         isSelected && isEditable ? (
             <TableCell component="th" scope="row">
                 <EditTask editTask={editTask}
                     currentTask={task}
-                    toggleSelectedRowAndEditability={() => toggleSelectedRowAndEditability()} />
+                    toggleSelectedRow={toggleSelectedRow} />
             </TableCell>
         ) : (
             <TableCell component="th" scope="row" >
