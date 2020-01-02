@@ -145,7 +145,7 @@ const Todo = () => {
         });
         setTasks(existingTasks);
         return existingTasks;
-    }
+    };
 
     /**
      * Removes an existing task from the application state.

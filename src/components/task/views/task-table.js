@@ -58,7 +58,7 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
         const nonNullSelectedItems = removeItemsWithNullId(selected);
         const isSelected = nonNullSelectedItems.filter(x => x.id === rowItem.id);
         return isSelected !== null && typeof isSelected !== undefined && isSelected.length !== 0 ? true : false;
-    }
+    };
 
     /**
      * Identifies if the passed in row item has been marked as editable by the user.
@@ -142,7 +142,7 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
             });
         }
         setEditable(existingEditableItems);
-    }
+    };
 
     /**
      * Toggles the selected value of the React Hook.

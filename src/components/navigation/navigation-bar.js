@@ -7,25 +7,38 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import AppDrawer from './app-drawer';
 import '../../styles/navigation-bar.css';
 
 const NavigationBar = () => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [isSearchIconClicked, setIsSearchIconClicked] = useState(false);
+
+	const toggleDrawer = event => {
+		console.log(`${event.currentTarget}`)
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setIsDrawerOpen(!isDrawerOpen);
+    };
 
 	const searchIconClick = () => {
 		setIsSearchIconClicked(!isSearchIconClicked);
-	}
+	};
 
 	return (
 			<AppBar style={{position: 'sticky'}}>
 				<Toolbar>
 					<container-left>
 						<hamburger-styling>
-							<IconButton
-								color="inherit"
-								aria-label="open drawer" >
+							<IconButton color="inherit"
+								aria-label="open drawer"
+								onClick={toggleDrawer} >
 								<MenuIcon />
-							</IconButton>
+								</IconButton>
+								<AppDrawer isOpen={isDrawerOpen}
+									toggleDrawer={toggleDrawer} />
+							
 						</hamburger-styling>
 						<title-styling>
 							<Typography variant="h6" noWrap>
