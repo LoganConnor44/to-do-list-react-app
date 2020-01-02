@@ -166,12 +166,18 @@ const Todo = () => {
      * @param { {id: integer, index: integer} } selectedTask
      */
     const editTask = updatedTask => {
-        const updatedTasks = [
-            ...tasks,
-            updatedTask
-        ];
-        setTasks(updatedTasks);
+        updateEditedTasks(updatedTask);
         db.tasks.update(updatedTask.id, {name: updatedTask.name});
+    };
+
+    const updateEditedTasks = updatedTask => {
+        const existingTasks = [...tasks];
+        existingTasks.map(task => {
+            if (updatedTask.id === task.id) {
+                task.name = updatedTask.name;
+            }
+        });
+        setTasks(existingTasks);
     };
 
     /**
