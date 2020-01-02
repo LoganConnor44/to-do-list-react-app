@@ -172,7 +172,7 @@ const Todo = () => {
 
     const updateEditedTasks = updatedTask => {
         const existingTasks = [...tasks];
-        existingTasks.map(task => {
+        existingTasks.forEach(task => {
             if (updatedTask.id === task.id) {
                 task.name = updatedTask.name;
             }
