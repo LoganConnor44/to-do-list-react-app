@@ -1,5 +1,14 @@
-form-styling {
-    margin: 4px;
-    width: 200px;
+create-task-form-styling {
+    margin: 1em;
     background: white;
+}
+
+create-task-container-left {
+    float: left;
+    width: 85%;
+}
+
+create-task-container-right {
+    float: right;
+    width: 15%;
 }
