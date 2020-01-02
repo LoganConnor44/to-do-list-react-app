@@ -5,166 +5,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Checkbox } from '@material-ui/core';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import StatusEnum from '../util/status-enum';
-import '../styles/task-table.css';
-import EditTask from './edit-task';
-
-
-import TextField from '@material-ui/core/TextField';
 import '../styles/create-task.css';
-import SendIcon from '@material-ui/icons/Send';
-
-const useToolbarStyles = makeStyles(theme => ({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
-    },
-    highlight:
-      theme.palette.type === 'light'
-        ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-          }
-        : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-          },
-    title: {
-      flex: '1 1 100%',
-    },
-    titleIcons: {
-        display: 'flex'
-    }
-  }));
-
-const TableToolbar = ({selected, setSelected, batchRemoveTasks, batchCompleteTasks, removeTask, completeTask}) => {
-    const classes = useToolbarStyles();
-    const numSelected = selected.filter(x => x.id !== null).length;
-
-    /**
-     * Filters out Objects in an array that have and id of null.
-     * 
-     * @param {any Object with an index of `id`} elements 
-     */
-    const removeItemsWithNullId = elements => elements.filter(item => item.id !== null);
-
-    /**
-     * Logic to determine if a single or batch update is appropriate.
-     * 
-     * @param {Integer} numSelected 
-     */
-    const completeTasksAndClearSelected = () => {
-        const nonNullSelected = removeItemsWithNullId(selected);
-        if (numSelected === 1) {
-            completeTask(nonNullSelected[0]);
-        } else {
-            batchCompleteTasks(selected);
-        }
-        
-        setSelected([]);
-    };
-
-    const removeTasksAndClearSelected = () => {
-        const nonNullSelected = removeItemsWithNullId(selected);
-        if (numSelected === 1) {
-            removeTask(nonNullSelected[0]);
-        } else {
-            batchRemoveTasks(nonNullSelected);
-        }
-        
-        setSelected([]);
-    };
-
-    return (
-        <Toolbar
-            className={clsx(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
-            >
-            {numSelected > 0 ? (
-                <Typography className={classes.title} color="inherit" variant="subtitle1">
-                {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography className={classes.title} variant="h6" id="tableTitle">
-                Name Of Goal 
-                </Typography>
-            )}
-
-            {numSelected > 0 ? (
-                <div className={classes.titleIcons}>
-                    <Tooltip title="Done">
-                        <IconButton aria-label="done" onClick={completeTasksAndClearSelected}>
-                            <DoneIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="delete" onClick={removeTasksAndClearSelected}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-            ) : (
-                <Tooltip title="Filter list">
-                <IconButton aria-label="filter list">
-                    <FilterListIcon />
-                </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-};
-
-/**
- * 
- * 
- * @param { {
- *          id: Integer
- *          name: String,
- *          status: StatusEnum,
- *          created: Date,
- *          deadline: Date,
- *          description: null,
- *          diffculty: DifficultyEnum,
- *          importance: ImportanceEnum,
- *          lastModified :Date,
- *          owner: String
- *      } } task
- * @param { { id: task.id, index: index } } rowTaskItem
- * @param {Boolean} isSelected
- * @param {Boolean} isEditable
- * @param {Boolean} isInactive
- * @param {Function} toggleSelectedRow
- * @retuns React Component
- */
-const SelectedEditableOrInactive = ({task, editTask, rowTaskItem, isSelected, isEditable, isInactive, toggleSelectedRow}) => {
-    return(
-        isSelected && isEditable ? (
-            <TableCell component="th" scope="row">
-                <EditTask editTask={editTask}
-                    currentTask={task} />
-            </TableCell>
-        ) : (
-            <TableCell component="th" scope="row" onClick={() => toggleSelectedRow(rowTaskItem)}>
-                { isInactive ? (
-                    <strike>{task.name}</strike>
-                ) : (
-                    task.name
-                )}
-            </TableCell>
-        )
-    );
-};
+import '../styles/task-table.css';
+import SelectedEditableOrInactive from './selected-editable-or-inactive';
+import StatusEnum from '../util/status-enum';
+import TableToolbar from './table-toolbar';
 
 /**
  * React task web component.
@@ -316,6 +164,11 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
         setSelected(existingSelectedItems);
     };
 
+    const toggleSelectedRowAndEditability = rowTaskItem => {
+        toggleEditability(rowTaskItem);
+        toggleSelectedRow(rowTaskItem);
+    };
+
     return (
         <div>
             <TableToolbar selected={selected}
@@ -354,11 +207,10 @@ const TaskTable = ({tasks, completeTask, removeTask, editTask, batchRemoveTasks,
                                     <SelectedEditableOrInactive
                                         task={task}
                                         editTask={editTask}
-                                        rowTaskItem={rowTaskItem}
                                         isSelected={isItemSelected}
                                         isEditable={isItemEditable}
                                         isInactive={isItemInactive}
-                                        toggleSelectedRow={isItemSelected} />
+                                        toggleSelectedRowAndEditability={() => toggleSelectedRowAndEditability(rowTaskItem)} />
                                     
                                     {isItemSelected ? (
                                         <TableCell padding="checkbox" scope="row" onClick={() => toggleEditability(rowTaskItem)}>

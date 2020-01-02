@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
-import TaskTable from './task-table';
-import CreateTask from './create-task';
-import SyncTask from './sync-task';
-import StatusEnum from '../util/status-enum';
-import DifficultyEnum from '../util/difficulty-enum';
-import ImportanceEnum from '../util/importance-enum';
-import axios from 'axios';
-import Dexie from 'dexie';
-import NavigationBar from './navigation-bar';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import '../styles/to-do.css';
-import UseAddToHomescreenPrompt from './add-to-homescreen';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import axios from 'axios';
+import Dexie from 'dexie';
+import TaskTable from './task-table';
+import CreateTask from './create-task';
+import SyncTask from './sync-task';
+import StatusEnum from '../util/status-enum';
+import DifficultyEnum from '../util/difficulty-enum';
+import ImportanceEnum from '../util/importance-enum';
+import NavigationBar from './navigation-bar';
+import UseAddToHomescreenPrompt from './add-to-homescreen';
+import '../styles/to-do.css';
 
 const InstallPwa = () => {
     const [prompt, promptToInstall] = UseAddToHomescreenPrompt();
