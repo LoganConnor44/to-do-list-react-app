@@ -6,6 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import AddToHomescreenPrompt from './add-to-homescreen-prompt';
+import db from '../../service/database-definition';
 
 /**
  * React web component to install the WebApk or a web shortcut to the user's homescreen.
@@ -13,17 +14,40 @@ import AddToHomescreenPrompt from './add-to-homescreen-prompt';
 const InstallPwa = () => {
     const [prompt, promptToInstall] = AddToHomescreenPrompt();
     const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
+    const [promptUserForInstallation, setPromptUserForInstallation] = useState(false);
+
+    const promptEventIsReady = prompt => prompt ? prompt : false;
+
+    const dismissAndStorePreference = event => {
+        hideAddToHomescreen();
+        doNotPromptAgain(event);
+    };
+
     const hideAddToHomescreen = () => setIsAddToHomescreenVisible(false);
+
     const installAndHideMessage = () => {
         hideAddToHomescreen();
         promptToInstall();
     };
+
+    const doNotPromptAgain = event => {
+        event.preventDefault();
+        db.preferences.toArray().then(results => {
+            db.preferences.update(results[0].id, {promptUserForInstallation: false});
+        });
+    };
+    
+    db.preferences.toArray().then(results => {
+        if (results.length !== 0) {
+            setPromptUserForInstallation(results[0].promptUserForInstallation);
+        }
+    });
     
     useEffect(() => {
-        if (prompt) {
+        if (promptEventIsReady() && promptUserForInstallation) {
             setIsAddToHomescreenVisible(true);
         }
-    }, [prompt]);
+    }, [prompt, promptUserForInstallation]);
 
     const message = "Click here to download this app.";
 
@@ -48,10 +72,10 @@ const InstallPwa = () => {
                     style={{backgroundColor: '#43a047'}}
                     action={
                         <div>
-                            <IconButton key="close" aria-label="close" onClick={installAndHideMessage} >
+                            <IconButton key="download-and-dismiss" aria-label="download-and-dismiss" onClick={installAndHideMessage} >
                                 <GetAppIcon />
                             </IconButton>
-                            <IconButton key="close" aria-label="close" onClick={hideAddToHomescreen} >
+                            <IconButton key="close" aria-label="close" onClick={dismissAndStorePreference} >
                                 <CloseIcon />
                             </IconButton>
                         </div>

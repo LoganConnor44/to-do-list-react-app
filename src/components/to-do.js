@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
-import Dexie from 'dexie';
 import TaskTable from './task/views/task-table';
 import CreateTask from './task/actions/create-task';
 import SyncTask from './sync-task';
@@ -12,22 +11,17 @@ import DifficultyEnum from '../util/difficulty-enum';
 import ImportanceEnum from '../util/importance-enum';
 import NavigationBar from './navigation/navigation-bar';
 import InstallPwa from './pwa/install-pwa';
+import db from '../service/database-definition';
 import '../styles/to-do.css';
 
 /**
  * Main To Do application component.
  */
 const Todo = () => {
-    const db = new Dexie("ToDoDb");
-    db.version(2).stores({tasks: `++id`});
-    
     const [hasError, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [tasksRemaining, setTasksRemaining] = useState(0);
-
-    
-    
 
     /**
      * Retrieves data from mock api.

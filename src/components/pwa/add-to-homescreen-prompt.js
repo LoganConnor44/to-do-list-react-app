@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import db from '../../service/database-definition';
 
 /**
  * Prompts the user to install the application.
@@ -13,8 +14,20 @@ const AddToHomescreenPrompt = () => {
         return Promise.reject(new Error('Tried installing before browser sent "beforeinstallprompt" event'));
     };
 
+    const initializePreferencesIfNecessary = count => {
+        if (count === 0) {
+            const initialize = {
+                username: 'loganconnor44',
+                promptUserForInstallation: true
+            };
+            db.preferences.put(initialize);
+        }
+    };
+
     useEffect(() => {
-        const ready = (event) => {
+        db.preferences.count().then(initializePreferencesIfNecessary);
+        
+        const ready = event => {
             event.preventDefault();
             setPrompt(event);
         };
