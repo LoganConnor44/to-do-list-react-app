@@ -25,9 +25,11 @@ const AddToHomescreenPrompt = () => {
     };
 
     useEffect(() => {
+        console.log(`inside use effect for add to homescreen prompt`)
         db.preferences.count().then(initializePreferencesIfNecessary);
         
         const ready = event => {
+            console.log(`above prevent default`)
             event.preventDefault();
             setPrompt(event);
         };
