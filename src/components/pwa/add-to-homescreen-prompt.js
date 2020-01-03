@@ -5,7 +5,7 @@ import db from '../../service/database-definition';
  * Prompts the user to install the application.
  */
 const AddToHomescreenPrompt = () => {
-    const [prompt, setPrompt] = useState(null);
+    const [prompt, setPrompt] = useState(false);
 
     const promptToInstall = () => {
         if (prompt) {
@@ -25,11 +25,9 @@ const AddToHomescreenPrompt = () => {
     };
 
     useEffect(() => {
-        console.log(`inside use effect for add to homescreen prompt`)
         db.preferences.count().then(initializePreferencesIfNecessary);
         
         const ready = event => {
-            console.log(`above prevent default`)
             event.preventDefault();
             setPrompt(event);
         };

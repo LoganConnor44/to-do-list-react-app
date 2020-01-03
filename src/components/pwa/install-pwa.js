@@ -16,7 +16,7 @@ const InstallPwa = () => {
     const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
     const [promptUserForInstallation, setPromptUserForInstallation] = useState(false);
 
-    const promptEventIsReady = prompt => prompt ? prompt : false;
+    const promptEventIsReady = () => prompt !== false ? prompt : false;
 
     const dismissAndStorePreference = event => {
         hideAddToHomescreen();
