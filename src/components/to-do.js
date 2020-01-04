@@ -204,13 +204,11 @@ const Todo = () => {
     return(
         <app-root-styling>
 
+            <InstallPwa />
+
             <div>
                 <NavigationBar />
             </div>
-
-            
-
-            <InstallPwa />
 
             <app-content-styling>
                 <Grid container 
