@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Divider from '@material-ui/core/Divider';
 import FaceIcon from '@material-ui/icons/Face';
+import AddToHomescreenPrompt from '../pwa/add-to-homescreen-prompt';
 
 const AppDrawer = ({isOpen, toggleDrawer}) => {
 
