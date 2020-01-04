@@ -15,7 +15,6 @@ const NavigationBar = () => {
 	const [isSearchIconClicked, setIsSearchIconClicked] = useState(false);
 
 	const toggleDrawer = event => {
-		console.log(`${event.currentTarget}`)
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
@@ -27,49 +26,48 @@ const NavigationBar = () => {
 	};
 
 	return (
-			<AppBar style={{position: 'sticky'}}>
-				<Toolbar>
-					<container-left>
-						<hamburger-styling>
-							<IconButton color="inherit"
-								aria-label="open drawer"
-								onClick={toggleDrawer} >
-								<MenuIcon />
-								</IconButton>
-								<AppDrawer isOpen={isDrawerOpen}
-									toggleDrawer={toggleDrawer} />
-							
-						</hamburger-styling>
-						<title-styling>
-							<Typography variant="h6" noWrap>
-								PWA To Do App
-						</Typography>
-						</title-styling>
-					</container-left>
-					<container-right>
-						{
-							isSearchIconClicked === false ? (
-								<search-icon-styling>
-									{/* below classes taken from raw, inspecting html - could not get icons to match*/}
-									<div className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
-										<SearchIcon onClick={searchIconClick} />
-									</div>
-								</search-icon-styling>
-							) : (
-									<ClickAwayListener onClickAway={searchIconClick} >
-										<search-input-styling>
-											<InputBase
-												autoFocus
-												placeholder="Search…"
-												inputProps={{ 'aria-label': 'search' }}
-												className="rootInput" />
-										</search-input-styling>
-									</ClickAwayListener>
-								)
-						}
-					</container-right>
-				</Toolbar>
-			</AppBar>
+		<AppBar style={{position: 'sticky'}}>
+			<Toolbar>
+				<container-left>
+					<hamburger-styling>
+						<IconButton color="inherit"
+							aria-label="open drawer"
+							onClick={toggleDrawer} >
+							<MenuIcon />
+							</IconButton>
+							<AppDrawer isOpen={isDrawerOpen}
+								toggleDrawer={toggleDrawer} />
+						
+					</hamburger-styling>
+					<title-styling>
+						<Typography variant="h6" noWrap >
+							PWA To Do App
+					</Typography>
+					</title-styling>
+				</container-left>
+				<container-right>
+					{
+						isSearchIconClicked === false ? (
+							<search-icon-styling>
+								{/* below classes taken from raw, inspecting html - could not get icons to match*/}
+								<div className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit">
+									<SearchIcon onClick={searchIconClick} />
+								</div>
+							</search-icon-styling>
+						) : (
+								<ClickAwayListener onClickAway={searchIconClick} >
+									<search-input-styling>
+										<InputBase autoFocus
+											placeholder="Search…"
+											inputProps={{ 'aria-label': 'search' }}
+											className="rootInput" />
+									</search-input-styling>
+								</ClickAwayListener>
+							)
+					}
+				</container-right>
+			</Toolbar>
+		</AppBar>
 	);
 }
 
