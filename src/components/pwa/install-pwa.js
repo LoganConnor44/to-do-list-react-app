@@ -16,6 +16,10 @@ const InstallPwa = () => {
     const [isAddToHomescreenVisible, setIsAddToHomescreenVisible] = useState(false);
     const [promptUserForInstallation, setPromptUserForInstallation] = useState(false);
 
+    /**
+     * Determines if the prompt is false or anything else.
+     * Prompt may be an object such as { isTrusted: boolean }
+     */
     const promptEventIsReady = () => prompt !== false ? prompt : false;
 
     const dismissAndStorePreference = event => {
