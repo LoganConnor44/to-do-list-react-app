@@ -5,8 +5,16 @@ import db from '../../service/database-definition';
  * Prompts the user to install the application.
  */
 const AddToHomescreenPrompt = () => {
+
+    /**
+     * @param { boolean } prompt This constant can change
+     * @param { isTrusted: boolean } prompt This constant can change
+     */
     const [prompt, setPrompt] = useState(false);
 
+    /**
+     * An identical function exists within app-drawer.js
+     */
     const promptToInstall = () => {
         if (prompt) {
             return prompt.prompt();
